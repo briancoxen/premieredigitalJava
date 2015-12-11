@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,7 @@ public class FileUploadCtrl {
         return "You can upload a file by posting to this same URL.";
     }
 
+    @CrossOrigin(origins = "http://localhost:80")
     @RequestMapping(value="/upload", method=RequestMethod.POST)
     public @ResponseBody String handleFileUpload(@RequestParam("name") String name,
             @RequestParam("file") MultipartFile file){
