@@ -31,7 +31,7 @@ public class FileUploadCtrl {
                         new BufferedOutputStream(new FileOutputStream(new File(name)));
                 stream.write(bytes);
                 stream.close();
-                return "You successfully uploaded " + name + "!";
+                return "{\"status\": \"You successfully uploaded!\"}";
             } catch (Exception e) {
                 return "You failed to upload " + name + " => " + e.getMessage();
             }
