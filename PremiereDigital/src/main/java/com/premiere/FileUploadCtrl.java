@@ -21,7 +21,7 @@ public class FileUploadCtrl {
     }
 
     /*Added CORS*/
-    @CrossOrigin(origins = "http://localhost:80")
+    @CrossOrigin(origins="http://localhost:80")
     @RequestMapping(value="/upload", method=RequestMethod.POST)
     public @ResponseBody String handleFileUpload(@RequestParam("name") String name,
             @RequestParam("file") MultipartFile file){
