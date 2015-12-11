@@ -20,6 +20,7 @@ public class FileUploadCtrl {
         return "You can upload a file by posting to this same URL.";
     }
 
+    /*Added CORS*/
     @CrossOrigin(origins = "http://localhost:80")
     @RequestMapping(value="/upload", method=RequestMethod.POST)
     public @ResponseBody String handleFileUpload(@RequestParam("name") String name,
