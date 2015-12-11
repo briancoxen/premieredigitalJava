@@ -28,7 +28,7 @@ public class FileUploadCtrl {
             try {
                 byte[] bytes = file.getBytes();
                 BufferedOutputStream stream =
-                        new BufferedOutputStream(new FileOutputStream(new File(name)));
+                        new BufferedOutputStream(new FileOutputStream(new File("/app/files/" + name)));
                 stream.write(bytes);
                 stream.close();
                 return "{\"status\": \"You successfully uploaded!\"}";
