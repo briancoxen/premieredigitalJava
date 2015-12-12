@@ -6,14 +6,20 @@ import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
+
+import DB.PremiereDBConn;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 import java.io.IOException;
+import java.sql.ResultSet;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 
 public class XMLHandler {
 	private File file;
@@ -37,6 +43,8 @@ public class XMLHandler {
 			Node movies = nList.item(count);
 			Element eMovies = (Element) movies;
 			String title = eMovies.getElementsByTagName("Title").item(0).getTextContent();
+			String md5 = eMovies.getElementsByTagName("MD5").item(0).getTextContent();
+			String meta = eMovies.getElementsByTagName("Meta").item(0).getTextContent();
 			
 			StringBuffer sb = new StringBuffer();
             sb.append("{");
@@ -48,6 +56,19 @@ public class XMLHandler {
             sb.append("}");
            
 			response.add(sb.toString());
+			
+		    PremiereDBConn mySQL = new PremiereDBConn();
+		    String update = String.format("INSERT into movies values (%s,%s,%s)", title, meta, md5);
+		    
+		    try {
+		    	Connection myDB = (Connection) mySQL.getDB();
+		    	Statement stmt = (Statement) myDB.createStatement();
+		    	int rs = stmt.executeUpdate(update);
+		    	
+		    } catch(Exception e) {
+		    	
+		    }
+		    
 		}
 		return response.toJSONString();
 	}
