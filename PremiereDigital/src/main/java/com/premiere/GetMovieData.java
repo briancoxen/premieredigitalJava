@@ -3,8 +3,7 @@ package com.premiere;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.simple.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,40 +21,23 @@ public class GetMovieData {
 	@CrossOrigin(origins="http://52.25.116.171")
     @RequestMapping(value="/getMovieData", method=RequestMethod.GET)
     public @ResponseBody String getMovieData(){
-		JSONArray response = new JSONArray();
 		PremiereDBConn mySQL = new PremiereDBConn();
 	    String query = "SELECT * from movies";
-	    
+	    JSONObject root = new JSONObject();
 	    try {
 	    	Connection myDB = (Connection) mySQL.getDB();
 	    	Statement stmt = (Statement) myDB.createStatement();
 	    	ResultSet rs = stmt.executeQuery(query);
-	    	
+	    	int count = 0;
 	    	try {
 				if (rs.isBeforeFirst()) {
 					while (rs.next()) {
-						StringBuffer sb = new StringBuffer();
-			            sb.append("{");
-			            
-			            sb.append(JSONObject.escape("title"));
-			            sb.append(":");
-			            sb.append("\"" + JSONObject.escape(rs.getString("Title")) + "\"");
-			            
-			            sb.append(",");
-			            
-			            sb.append(JSONObject.escape("MD5"));
-			            sb.append(":");
-			            sb.append("\"" + JSONObject.escape(rs.getString("MD5")) + "\"");
-			            
-			            sb.append(",");
-			            
-			            sb.append(JSONObject.escape("Meta"));
-			            sb.append(":");
-			            sb.append("\"" + JSONObject.escape(rs.getString("Meta")) + "\"");
-			            
-			            sb.append("}");
-			           
-						response.add(sb.toString());
+						JSONObject child = new JSONObject();
+						root.put(count, child);
+						child.put("Title", rs.getString("Title"));
+			            child.put("MD5", rs.getString("MD5"));
+			            child.put("Meta", rs.getString("Meta"));
+			            count++;
 					}
 				}
 	    	} catch(SQLException sql) {
@@ -65,6 +47,6 @@ public class GetMovieData {
 	    } catch(Exception e) {
 	    	return "{\"error\":\""+e+"\"}";
 	    }
-        return response.toJSONString();
+        return root.toJSONString();
     }
 }
