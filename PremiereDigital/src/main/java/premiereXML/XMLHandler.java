@@ -10,6 +10,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 import java.io.IOException;
+import org.json.simple.JSONObject;
 
 
 public class XMLHandler {
@@ -26,14 +27,15 @@ public class XMLHandler {
 		this.doc = dBuilder.parse(file);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String loadXMLData() {
-		String json = new String();
+		JSONObject response = new JSONObject();
 		for (int count = 0; count < doc.getChildNodes().getLength(); count++) {
 			Node movies = doc.getChildNodes().item(count);
 			Element eMovies = (Element) movies;
-			json = "{\"title\":\"" + eMovies.getElementsByTagName("Title").item(0).getTextContent() + "\"}";
+			String title = eMovies.getElementsByTagName("Title").item(0).getTextContent();
+			response.put("title", title);
 		}
-		System.out.println(json);
-		return json;
+		return response.toJSONString();
 	}
 }
