@@ -37,9 +37,8 @@ public class FileUploadCtrl {
                 XMLHandler xml = new XMLHandler(new File(name));
                 xml.parseXML();
                 return xml.loadXMLData();
-                //return "{\"status\": \"You successfully uploaded!\"}";
             } catch (Exception e) {
-                return "You failed to upload " + name + " => " + e.getMessage();
+                return "{\"status\":\""+e+"\"}";
             }
         } else {
             return "You failed to upload " + name + " because the file was empty.";
