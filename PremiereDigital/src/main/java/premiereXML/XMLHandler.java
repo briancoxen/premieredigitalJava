@@ -34,7 +34,7 @@ public class XMLHandler {
 		NodeList nList = doc.getElementsByTagName("movie");
 		JSONArray response = new JSONArray();
 		for (int count = 0; count < nList.getLength(); count++) {
-			Node movies = doc.getChildNodes().item(count);
+			Node movies = nList.item(count);
 			Element eMovies = (Element) movies;
 			String title = eMovies.getElementsByTagName("Title").item(0).getTextContent();
 			
