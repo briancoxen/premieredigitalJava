@@ -31,8 +31,9 @@ public class XMLHandler {
 	
 	@SuppressWarnings("unchecked")
 	public String loadXMLData() {
+		NodeList nList = doc.getElementsByTagName("movie");
 		JSONArray response = new JSONArray();
-		for (int count = 0; count < doc.getChildNodes().getLength(); count++) {
+		for (int count = 0; count < nList.getLength(); count++) {
 			Node movies = doc.getChildNodes().item(count);
 			Element eMovies = (Element) movies;
 			String title = eMovies.getElementsByTagName("Title").item(0).getTextContent();
