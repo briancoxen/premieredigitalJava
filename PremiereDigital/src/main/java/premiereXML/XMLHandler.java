@@ -18,9 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 public class XMLHandler {
 	private File file;
 	private Document doc;
@@ -35,10 +32,8 @@ public class XMLHandler {
 		this.doc = dBuilder.parse(file);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public String loadXMLData() throws SQLException {
 		NodeList nList = doc.getElementsByTagName("movie");
-		JSONArray response = new JSONArray();
 		for (int count = 0; count < nList.getLength(); count++) {
 			Node movies = nList.item(count);
 			Element eMovies = (Element) movies;
@@ -55,7 +50,7 @@ public class XMLHandler {
 		    try {
 		    	myDB = (Connection) mySQL.getDB();
 		    	stmt = (Statement) myDB.createStatement();
-		    	int rs = stmt.executeUpdate(update);
+		    	stmt.executeUpdate(update);
 		    	
 		    } catch(Exception e) {
 		    	return "{\"error\":\""+e+"\"}";
@@ -64,6 +59,6 @@ public class XMLHandler {
 		    	stmt.close();
 		    }    
 		}
-		return response.toJSONString();
+		return "{\"success\":\"0\"}";
 	}
 }
