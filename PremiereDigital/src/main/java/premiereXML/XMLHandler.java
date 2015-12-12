@@ -53,6 +53,18 @@ public class XMLHandler {
             sb.append(":");
             sb.append("\"" + JSONObject.escape(title) + "\"");
             
+            sb.append(",");
+            
+            sb.append(JSONObject.escape("MD5"));
+            sb.append(":");
+            sb.append("\"" + JSONObject.escape(md5) + "\"");
+            
+            sb.append(",");
+            
+            sb.append(JSONObject.escape("Meta"));
+            sb.append(":");
+            sb.append("\"" + JSONObject.escape(meta) + "\"");
+            
             sb.append("}");
            
 			response.add(sb.toString());
@@ -66,7 +78,7 @@ public class XMLHandler {
 		    	int rs = stmt.executeUpdate(update);
 		    	
 		    } catch(Exception e) {
-		    	
+		    	return "{\"error\":\""+e+"\"}";
 		    }
 		    
 		}
