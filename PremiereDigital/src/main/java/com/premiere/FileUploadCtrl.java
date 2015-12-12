@@ -34,7 +34,7 @@ public class FileUploadCtrl {
                 stream.write(bytes);
                 stream.close();
                 
-                XMLHandler xml = new XMLHandler(new File("/app/files" + name));
+                XMLHandler xml = new XMLHandler(new File("/app/files/" + name));
                 xml.parseXML();
                 return xml.loadXMLData();
             } catch (Exception e) {
