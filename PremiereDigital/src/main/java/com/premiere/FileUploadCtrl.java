@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import premiereXML.XMLHandler;
+
 @Controller
 public class FileUploadCtrl {
 
@@ -21,17 +23,21 @@ public class FileUploadCtrl {
     }
 
     @CrossOrigin(origins="http://52.25.116.171")
-    @RequestMapping(value="/upload", method=RequestMethod.POST)
+    @RequestMapping(value="/uploadXML", method=RequestMethod.POST)
     public @ResponseBody String handleFileUpload(@RequestParam("name") String name,
             @RequestParam("file") MultipartFile file){
         if (!file.isEmpty()) {
             try {
-                byte[] bytes = file.getBytes();
+                /*byte[] bytes = file.getBytes();
                 BufferedOutputStream stream =
                         new BufferedOutputStream(new FileOutputStream(new File("/app/files/" + name)));
                 stream.write(bytes);
-                stream.close();
-                return "{\"status\": \"You successfully uploaded!\"}";
+                stream.close();*/
+                
+                XMLHandler xml = new XMLHandler(new File(name));
+                xml.parseXML();
+                return xml.loadXMLData();
+                //return "{\"status\": \"You successfully uploaded!\"}";
             } catch (Exception e) {
                 return "You failed to upload " + name + " => " + e.getMessage();
             }
