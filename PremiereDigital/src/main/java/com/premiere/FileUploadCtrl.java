@@ -28,13 +28,13 @@ public class FileUploadCtrl {
             @RequestParam("file") MultipartFile file){
         if (!file.isEmpty()) {
             try {
-                /*byte[] bytes = file.getBytes();
+                byte[] bytes = file.getBytes();
                 BufferedOutputStream stream =
                         new BufferedOutputStream(new FileOutputStream(new File("/app/files/" + name)));
                 stream.write(bytes);
-                stream.close();*/
+                stream.close();
                 
-                XMLHandler xml = new XMLHandler(new File(name));
+                XMLHandler xml = new XMLHandler(new File("/app/files" + name));
                 xml.parseXML();
                 return xml.loadXMLData();
             } catch (Exception e) {
