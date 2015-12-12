@@ -34,7 +34,7 @@ public class XMLHandler {
 			Node movies = doc.getChildNodes().item(count);
 			Element eMovies = (Element) movies;
 			String title = eMovies.getElementsByTagName("Title").item(0).getTextContent();
-			response.put("title", "Hello");
+			response.put("title", "title");
 		}
 		return response.toJSONString();
 	}
