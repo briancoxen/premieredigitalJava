@@ -33,7 +33,7 @@ public class XMLHandler {
 			Element eMovies = (Element) movies;
 			json = "{\"title\":\"" + eMovies.getElementsByTagName("Title").item(0).getTextContent() + "\"}";
 		}
-		
+		System.out.println(json);
 		return json;
 	}
 }
