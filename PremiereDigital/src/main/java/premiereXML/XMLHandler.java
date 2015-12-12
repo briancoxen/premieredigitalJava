@@ -70,7 +70,7 @@ public class XMLHandler {
 			response.add(sb.toString());
 			
 		    PremiereDBConn mySQL = new PremiereDBConn();
-		    String update = String.format("INSERT into movies values (%s,%s,%s)", title, meta, md5);
+		    String update = String.format("INSERT into movies values ('%s','%s','%s')", title, meta, md5);
 		    
 		    try {
 		    	Connection myDB = (Connection) mySQL.getDB();
