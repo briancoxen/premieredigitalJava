@@ -10,6 +10,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 import java.io.IOException;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 
@@ -29,12 +31,22 @@ public class XMLHandler {
 	
 	@SuppressWarnings("unchecked")
 	public String loadXMLData() {
-		JSONObject response = new JSONObject();
+		JSONArray response = new JSONArray();
 		for (int count = 0; count < doc.getChildNodes().getLength(); count++) {
 			Node movies = doc.getChildNodes().item(count);
 			Element eMovies = (Element) movies;
 			String title = eMovies.getElementsByTagName("Title").item(0).getTextContent();
-			response.put("title", title);
+			
+			StringBuffer sb = new StringBuffer();
+            sb.append("{");
+            
+            sb.append(JSONObject.escape("title"));
+            sb.append(":");
+            sb.append("\"" + JSONObject.escape(title) + "\"");
+            
+            sb.append("}");
+           
+			response.add(sb.toString());
 		}
 		return response.toJSONString();
 	}
