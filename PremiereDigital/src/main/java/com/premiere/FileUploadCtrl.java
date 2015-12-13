@@ -2,7 +2,9 @@ package com.premiere;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.security.MessageDigest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -57,20 +59,33 @@ public class FileUploadCtrl {
 			try {
 				String name = "media.txt";
 				String filePath = "/var/www/html/static/files/" + name;
+				String urlPath = "static/files/" + name;
+				
 				byte[] bytes = file.getBytes();
 				BufferedOutputStream stream = new BufferedOutputStream(
 						new FileOutputStream(new File(filePath)));
 				stream.write(bytes);
 				stream.close();
+			
+				MessageDigest md = MessageDigest.getInstance("MD5");
 				
-				String update = String.format("update movies set File='%s' where id=%s", filePath, id);
+				byte[] hash = md.digest(bytes); 
+				StringBuilder sb = new StringBuilder(2*hash.length); 
+				
+				for(byte b : hash){ 
+					sb.append(String.format("%02x", b&0xff)); 
+				} 
+				
+				String digest = sb.toString();
+				
+				String update = String.format("update movies set File='%s' where id=%s", urlPath, id);
 				
 				PremiereDBConn mySQL = new PremiereDBConn();
 				Connection myDB = (Connection) mySQL.getDB();
 				Statement stmt = (Statement) myDB.createStatement();
 				stmt.executeUpdate(update);
 
-				return "{\"status\":\"0\"}";
+				return "{\"status\":\"" +digest+ "\"}";
 			} catch (Exception e) {
 				return "{\"status\":\"" + e + "\"}";
 			}
