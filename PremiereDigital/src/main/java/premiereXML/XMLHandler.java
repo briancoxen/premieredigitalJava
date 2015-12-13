@@ -35,6 +35,10 @@ public class XMLHandler {
 	public String loadXMLData() throws SQLException {
 		NodeList nList = doc.getElementsByTagName("movie");
 		for (int count = 0; count < nList.getLength(); count++) {
+			PremiereDBConn mySQL = new PremiereDBConn();
+			Connection myDB = null;
+			Statement stmt = null;
+			
 			try {
 				Node movies = nList.item(count);
 				Element eMovies = (Element) movies;
@@ -49,9 +53,6 @@ public class XMLHandler {
 				String length = eMeta.getElementsByTagName("Length").item(0).getTextContent();
 				String release = eMeta.getElementsByTagName("Release").item(0).getTextContent();
 			
-				PremiereDBConn mySQL = new PremiereDBConn();
-				Connection myDB = null;
-				Statement stmt = null;
 				String update = String.format("INSERT into movies values ('%s','%s','%s')", title, md5, director, release, description, length, type);
 		 
 		    	myDB = (Connection) mySQL.getDB();
