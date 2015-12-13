@@ -42,6 +42,7 @@ public class GetMovieData {
 			            child.put("Description", rs.getString("Description"));
 			            child.put("Length", rs.getString("Length"));
 			            child.put("Type", rs.getString("Type"));
+			            child.put("File", rs.getString("File"));
 			            count++;
 					}
 				}
