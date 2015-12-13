@@ -25,26 +25,25 @@ public class XMLHandler {
 	public XMLHandler(File file) {
 		this.file = file;
 	}
-	
+
 	public void parseXML() throws ParserConfigurationException, SAXException, IOException {
-		DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder();
+		DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		this.doc = dBuilder.parse(file);
 	}
-	
+
 	public String loadXMLData() throws SQLException {
 		NodeList nList = doc.getElementsByTagName("movie");
 		for (int count = 0; count < nList.getLength(); count++) {
 			PremiereDBConn mySQL = new PremiereDBConn();
 			Connection myDB = null;
 			Statement stmt = null;
-			
+
 			try {
 				Node movies = nList.item(count);
 				Element eMovies = (Element) movies;
 				String title = eMovies.getElementsByTagName("Title").item(0).getTextContent();
 				String md5 = eMovies.getElementsByTagName("MD5").item(0).getTextContent();
-			
+
 				NodeList meta = eMovies.getElementsByTagName("Meta").item(0).getChildNodes();
 				Element eMeta = (Element) meta;
 				String director = eMeta.getElementsByTagName("Director").item(0).getTextContent();
@@ -52,19 +51,21 @@ public class XMLHandler {
 				String description = eMeta.getElementsByTagName("Description").item(0).getTextContent();
 				String length = eMeta.getElementsByTagName("Length").item(0).getTextContent();
 				String release = eMeta.getElementsByTagName("Released").item(0).getTextContent();
-			
-				String update = String.format("INSERT into movies values ('%s','%s','%s','%s','%s','%s','%s')", title, md5, director, release, description, length, type);
-		 
-		    	myDB = (Connection) mySQL.getDB();
-		    	stmt = (Statement) myDB.createStatement();
-		    	stmt.executeUpdate(update);
-		    	
-		    } catch(Exception e) {
-		    	return "{\"error\":\""+e+"\"}";
-		    } finally {
-		    	myDB.close();
-		    	stmt.close();
-		    }    
+
+				String update = String.format(
+						"INSERT into movies (Title, MD5, Director, ReleaseDate, Description, Length, Type) values ('%s','%s','%s','%s','%s','%s','%s')",
+						title, md5, director, release, description, length, type);
+
+				myDB = (Connection) mySQL.getDB();
+				stmt = (Statement) myDB.createStatement();
+				stmt.executeUpdate(update);
+
+			} catch (Exception e) {
+				return "{\"error\":\"" + e + "\"}";
+			} finally {
+				myDB.close();
+				stmt.close();
+			}
 		}
 		return "{\"success\":\"0\"}";
 	}
