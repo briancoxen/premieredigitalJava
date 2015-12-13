@@ -53,7 +53,7 @@ public class XMLHandler {
 				String length = eMeta.getElementsByTagName("Length").item(0).getTextContent();
 				String release = eMeta.getElementsByTagName("Released").item(0).getTextContent();
 			
-				String update = String.format("INSERT into movies values ('%s','%s','%s')", title, md5, director, release, description, length, type);
+				String update = String.format("INSERT into movies values ('%s','%s','%s','%s','%s','%s','%s')", title, md5, director, release, description, length, type);
 		 
 		    	myDB = (Connection) mySQL.getDB();
 		    	stmt = (Statement) myDB.createStatement();
