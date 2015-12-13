@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
+
+import DB.PremiereDBConn;
 import premiereXML.XMLHandler;
 
 @Controller
@@ -52,11 +56,19 @@ public class FileUploadCtrl {
 		if (!file.isEmpty()) {
 			try {
 				String name = "media.txt";
+				String filePath = "/var/www/html/static/files/" + name;
 				byte[] bytes = file.getBytes();
 				BufferedOutputStream stream = new BufferedOutputStream(
-						new FileOutputStream(new File("/var/www/html/static/files/" + name)));
+						new FileOutputStream(new File(filePath)));
 				stream.write(bytes);
 				stream.close();
+				
+				String update = String.format("update movies set File='%s' where id=%s", filePath, id);
+				
+				PremiereDBConn mySQL = new PremiereDBConn();
+				Connection myDB = (Connection) mySQL.getDB();
+				Statement stmt = (Statement) myDB.createStatement();
+				stmt.executeUpdate(update);
 
 				return "{\"status\":\"0\"}";
 			} catch (Exception e) {
