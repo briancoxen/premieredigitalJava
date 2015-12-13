@@ -51,7 +51,7 @@ public class XMLHandler {
 				String type = eMeta.getElementsByTagName("Type").item(0).getTextContent();
 				String description = eMeta.getElementsByTagName("Description").item(0).getTextContent();
 				String length = eMeta.getElementsByTagName("Length").item(0).getTextContent();
-				String release = eMeta.getElementsByTagName("Release").item(0).getTextContent();
+				String release = eMeta.getElementsByTagName("Released").item(0).getTextContent();
 			
 				String update = String.format("INSERT into movies values ('%s','%s','%s')", title, md5, director, release, description, length, type);
 		 
