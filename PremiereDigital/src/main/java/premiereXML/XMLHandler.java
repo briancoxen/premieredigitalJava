@@ -35,27 +35,25 @@ public class XMLHandler {
 	public String loadXMLData() throws SQLException {
 		NodeList nList = doc.getElementsByTagName("movie");
 		for (int count = 0; count < nList.getLength(); count++) {
+			try {
+				Node movies = nList.item(count);
+				Element eMovies = (Element) movies;
+				String title = eMovies.getElementsByTagName("Title").item(0).getTextContent();
+				String md5 = eMovies.getElementsByTagName("MD5").item(0).getTextContent();
 			
-			Node movies = nList.item(count);
-			Element eMovies = (Element) movies;
-			String title = eMovies.getElementsByTagName("Title").item(0).getTextContent();
-			String md5 = eMovies.getElementsByTagName("MD5").item(0).getTextContent();
+				NodeList meta = eMovies.getElementsByTagName("Meta").item(0).getChildNodes();
+				Element eMeta = (Element) meta;
+				String director = eMeta.getElementsByTagName("Director").item(0).getTextContent();
+				String type = eMeta.getElementsByTagName("Type").item(0).getTextContent();
+				String description = eMeta.getElementsByTagName("Description").item(0).getTextContent();
+				String length = eMeta.getElementsByTagName("Length").item(0).getTextContent();
+				String release = eMeta.getElementsByTagName("Release").item(0).getTextContent();
 			
-			NodeList meta = eMovies.getElementsByTagName("Meta").item(0).getChildNodes();
-			Element eMeta = (Element) meta;
-			String director = eMeta.getElementsByTagName("Director").item(0).getTextContent();
-			String type = eMeta.getElementsByTagName("Type").item(0).getTextContent();
-			String description = eMeta.getElementsByTagName("Description").item(0).getTextContent();
-			String length = eMeta.getElementsByTagName("Length").item(0).getTextContent();
-			String release = eMeta.getElementsByTagName("Release").item(0).getTextContent();
-			
-			
-		    PremiereDBConn mySQL = new PremiereDBConn();
-		    Connection myDB = null;
-		    Statement stmt = null;
-		    String update = String.format("INSERT into movies values ('%s','%s','%s')", title, md5, director, release, description, length, type);
-		    
-		    try {
+				PremiereDBConn mySQL = new PremiereDBConn();
+				Connection myDB = null;
+				Statement stmt = null;
+				String update = String.format("INSERT into movies values ('%s','%s','%s')", title, md5, director, release, description, length, type);
+		 
 		    	myDB = (Connection) mySQL.getDB();
 		    	stmt = (Statement) myDB.createStatement();
 		    	stmt.executeUpdate(update);
