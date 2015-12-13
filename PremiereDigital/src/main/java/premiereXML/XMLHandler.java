@@ -41,20 +41,19 @@ public class XMLHandler {
 			try {
 				Node movies = nList.item(count);
 				Element eMovies = (Element) movies;
-				String title = eMovies.getElementsByTagName("Title").item(0).getTextContent();
-				String md5 = eMovies.getElementsByTagName("MD5").item(0).getTextContent();
 
 				NodeList meta = eMovies.getElementsByTagName("Meta").item(0).getChildNodes();
 				Element eMeta = (Element) meta;
-				String director = eMeta.getElementsByTagName("Director").item(0).getTextContent();
-				String type = eMeta.getElementsByTagName("Type").item(0).getTextContent();
-				String description = eMeta.getElementsByTagName("Description").item(0).getTextContent();
-				String length = eMeta.getElementsByTagName("Length").item(0).getTextContent();
-				String release = eMeta.getElementsByTagName("Released").item(0).getTextContent();
 
 				String update = String.format(
 						"INSERT into movies (Title, MD5, Director, ReleaseDate, Description, Length, Type) values ('%s','%s','%s','%s','%s','%s','%s')",
-						title, md5, director, release, description, length, type);
+						eMovies.getElementsByTagName("Title").item(0).getTextContent(),
+						eMovies.getElementsByTagName("MD5").item(0).getTextContent(), 
+						eMeta.getElementsByTagName("Director").item(0).getTextContent(), 
+						eMeta.getElementsByTagName("Released").item(0).getTextContent(),
+						eMeta.getElementsByTagName("Description").item(0).getTextContent(),
+						eMeta.getElementsByTagName("Length").item(0).getTextContent(), 
+						eMeta.getElementsByTagName("Type").item(0).getTextContent());
 
 				myDB = (Connection) mySQL.getDB();
 				stmt = (Statement) myDB.createStatement();

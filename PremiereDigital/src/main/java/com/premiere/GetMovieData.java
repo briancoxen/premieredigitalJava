@@ -34,9 +34,14 @@ public class GetMovieData {
 					while (rs.next()) {
 						JSONObject child = new JSONObject();
 						root.put(count, child);
+						child.put("id", rs.getInt("id"));
 						child.put("Title", rs.getString("Title"));
 			            child.put("MD5", rs.getString("MD5"));
-			            child.put("Meta", rs.getString("Meta"));
+			            child.put("Director", rs.getString("Director"));
+			            child.put("ReleaseDate", rs.getString("ReleaseDate"));
+			            child.put("Description", rs.getString("Description"));
+			            child.put("Length", rs.getString("Length"));
+			            child.put("Type", rs.getString("Type"));
 			            count++;
 					}
 				}
