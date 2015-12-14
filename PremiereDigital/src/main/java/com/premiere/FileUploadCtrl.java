@@ -80,7 +80,7 @@ public class FileUploadCtrl {
 					Statement stmt = (Statement) myDB.createStatement();
 					stmt.executeUpdate(update);
 					
-					return "{\"status\":\"0\"}";
+					return "{\"status\":\"0\", \"File\":\"" + urlPath + "\"}";
 				} else {
 					return "{\"status\":\"1\",\"error\":\"" + md5.digest() + "\"}";
 				}
