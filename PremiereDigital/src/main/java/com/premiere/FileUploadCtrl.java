@@ -3,6 +3,8 @@ package com.premiere;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -57,7 +59,8 @@ public class FileUploadCtrl {
 			@RequestParam("file") MultipartFile file) {
 		if (!file.isEmpty()) {
 			try {
-				String name = "media.txt";
+				String date = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) ;
+				String name = date.concat(file.getOriginalFilename());
 				String filePath = "/var/www/html/static/files/" + name;
 				String urlPath = "static/files/" + name;
 				
