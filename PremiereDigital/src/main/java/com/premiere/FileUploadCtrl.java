@@ -18,6 +18,7 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
 import DB.PremiereDBConn;
+import premiereMD5.PremiereMD5Check;
 import premiereXML.XMLHandler;
 
 @Controller
@@ -54,6 +55,7 @@ public class FileUploadCtrl {
 	@CrossOrigin(origins = "http://52.25.116.171")
 	@RequestMapping(value = "/uploadMedia", method = RequestMethod.POST)
 	public @ResponseBody String handleMediaUpload(@RequestParam("id") String id,
+			@RequestParam("checksum") String checksum,
 			@RequestParam("file") MultipartFile file) {
 		if (!file.isEmpty()) {
 			try {
@@ -62,30 +64,27 @@ public class FileUploadCtrl {
 				String urlPath = "static/files/" + name;
 				
 				byte[] bytes = file.getBytes();
-				BufferedOutputStream stream = new BufferedOutputStream(
-						new FileOutputStream(new File(filePath)));
-				stream.write(bytes);
-				stream.close();
 			
-				MessageDigest md = MessageDigest.getInstance("MD5");
+				PremiereMD5Check md5 = new PremiereMD5Check(bytes);
 				
-				byte[] hash = md.digest(bytes); 
-				StringBuilder sb = new StringBuilder(2*hash.length); 
+				if(md5.digest() == checksum) {
+					BufferedOutputStream stream = new BufferedOutputStream(
+							new FileOutputStream(new File(filePath)));
+					stream.write(bytes);
+					stream.close();
+					
+					String update = String.format("update movies set File='%s' where id=%s", urlPath, id);
 				
-				for(byte b : hash){ 
-					sb.append(String.format("%02x", b&0xff)); 
-				} 
-				
-				String digest = sb.toString();
-				
-				String update = String.format("update movies set File='%s' where id=%s", urlPath, id);
-				
-				PremiereDBConn mySQL = new PremiereDBConn();
-				Connection myDB = (Connection) mySQL.getDB();
-				Statement stmt = (Statement) myDB.createStatement();
-				stmt.executeUpdate(update);
+					PremiereDBConn mySQL = new PremiereDBConn();
+					Connection myDB = (Connection) mySQL.getDB();
+					Statement stmt = (Statement) myDB.createStatement();
+					stmt.executeUpdate(update);
+					
+					return "{\"status\":\"0\"}";
+				} else {
+					return "{\"status\":\"1\",\"error\":\"" + md5.digest() + "\"}";
+				}
 
-				return "{\"status\":\"" +digest+ "\"}";
 			} catch (Exception e) {
 				return "{\"status\":\"" + e + "\"}";
 			}
