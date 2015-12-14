@@ -28,7 +28,7 @@ public class DataManager {
 		try {
 			myDB = (Connection) mySQL.getDB();
 	    	stmt = (Statement) myDB.createStatement();
-	    	stmt.executeQuery(setNull);
+	    	stmt.executeUpdate(setNull);
 	    	
 	    } catch(SQLException sql) {
 	    	return "{\"error\":\""+sql+"\"}";
