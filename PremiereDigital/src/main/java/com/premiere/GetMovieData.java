@@ -18,7 +18,7 @@ import DB.PremiereDBConn;
 @Controller
 public class GetMovieData {
 	@SuppressWarnings("unchecked")
-	@CrossOrigin(origins="http://52.25.116.171")
+	@CrossOrigin(origins="http://ec2-52-25-116-171.us-west-2.compute.amazonaws.com")
     @RequestMapping(value="/getMovieData", method=RequestMethod.GET)
     public @ResponseBody String getMovieData(){
 		PremiereDBConn mySQL = new PremiereDBConn();

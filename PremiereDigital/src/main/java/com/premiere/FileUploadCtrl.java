@@ -29,7 +29,7 @@ public class FileUploadCtrl {
 		return "You can upload a file by posting to this same URL.";
 	}
 
-	@CrossOrigin(origins = "http://52.25.116.171")
+	@CrossOrigin(origins = "http://ec2-52-25-116-171.us-west-2.compute.amazonaws.com")
 	@RequestMapping(value = "/uploadXML", method = RequestMethod.POST)
 	public @ResponseBody String handleFileUpload(@RequestParam("file") MultipartFile file) {
 		if (!file.isEmpty()) {
@@ -52,7 +52,7 @@ public class FileUploadCtrl {
 		}
 	}
 
-	@CrossOrigin(origins = "http://52.25.116.171")
+	@CrossOrigin(origins = "http://ec2-52-25-116-171.us-west-2.compute.amazonaws.com")
 	@RequestMapping(value = "/uploadMedia", method = RequestMethod.POST)
 	public @ResponseBody String handleMediaUpload(@RequestParam("id") String id,
 			@RequestParam("checksum") String checksum,

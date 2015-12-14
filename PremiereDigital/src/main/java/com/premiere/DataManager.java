@@ -16,7 +16,7 @@ import DB.PremiereDBConn;
 
 @Controller
 public class DataManager {
-	@CrossOrigin(origins="http://52.25.116.171")
+	@CrossOrigin(origins="http://ec2-52-25-116-171.us-west-2.compute.amazonaws.com")
     @RequestMapping(value="/deleteFile", method=RequestMethod.POST)
     public @ResponseBody String deleteFile(@RequestParam("id") String id) throws SQLException{
 		PremiereDBConn mySQL = new PremiereDBConn();
