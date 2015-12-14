@@ -67,7 +67,7 @@ public class FileUploadCtrl {
 			
 				PremiereMD5Check md5 = new PremiereMD5Check(bytes);
 				
-				if(md5.digest() == checksum) {
+				if(md5.digest().contains(checksum)) {
 					BufferedOutputStream stream = new BufferedOutputStream(
 							new FileOutputStream(new File(filePath)));
 					stream.write(bytes);
